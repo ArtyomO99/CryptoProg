@@ -1,14 +1,16 @@
-CC=g++
-CFLAGS=-c -Wall
-LDFLAGS=
-SOURCES=hash.cpp
-OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=hash
+.PHONY: all debug release clean
 
-all: $(SOURCES) $(EXECUTABLE)
-	
-$(EXECUTABLE): $(OBJECTS) 
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+all: debug release
 
-.cpp.o:
-	$(CC) $(CFLAGS) $< -o $@
+debug: hash-dbg
+
+hello-dbg: hash.cpp
+	g++ -g -O0 hash.cpp -o hash-dbg -Wall
+
+release: hash
+
+hello: hash.cpp
+	g++ -O2 hash.cpp -o hash -DNDEBUG -Wall
+
+clean:
+	rm -f hash-dbg hash
