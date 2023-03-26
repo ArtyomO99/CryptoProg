@@ -1,14 +1,16 @@
-CC=g++
-CFLAGS=-c -Wall
-LDFLAGS=
-SOURCES=cipher.cpp
-OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=sipher
+.PHONY: all debug release clean
 
-all: $(SOURCES) $(EXECUTABLE)
-	
-$(EXECUTABLE): $(OBJECTS) 
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+all: debug release
 
-.cpp.o:
-	$(CC) $(CFLAGS) $< -o $@
+debug: cipher-dbg
+
+hello-dbg: cipher.cpp
+	g++ -g -O0 cipher.cpp -o cipher-dbg -Wall
+
+release: cipher
+
+hello: cipher.cpp
+	g++ -O2 cipher.cpp -o cipher -DNDEBUG -Wall
+
+clean:
+	rm -f cipher-dbg cipher
